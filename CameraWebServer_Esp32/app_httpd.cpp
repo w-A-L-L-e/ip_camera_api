@@ -888,6 +888,8 @@ static esp_err_t cmd_handler(httpd_req_t *req)
         res = s->set_wb_mode(s, val);
     else if (!strcmp(variable, "ae_level"))
         res = s->set_ae_level(s, val);
+    else if (!strcmp(variable, "restart"))
+        if(val==1) esp_restart(); // issue a reboot/restart of esp to fix streaming
 #ifdef CONFIG_LED_ILLUMINATOR_ENABLED
     else if (!strcmp(variable, "led_intensity")) {
         led_duty = val;

@@ -50,6 +50,8 @@ Choose board: AI Thinker ESP32-CAM and a serial port cu.usbmodem1410 (by pluggin
 
 #include "camera_pins.h"
 
+#define FLASH_GPIO_NUM 4  // ESP32-CAM GPIO 4 (flashlight)
+
 // ===========================
 // Enter your WiFi credentials
 // ===========================
@@ -58,6 +60,8 @@ const char* password = "uu4xawdvYYnf";
 
 // TODO: change this to an actual public running server in future, for now just connect to laptop
 const char* serverName = "http://192.168.0.215:3000/camera_update";
+
+// TODO: OTA https://lastminuteengineers.com/esp32-ota-web-updater-arduino-ide/
 
 
 void startCameraServer();
@@ -167,6 +171,10 @@ void setup() {
   Serial.println("");
   Serial.println("WiFi connected");
 
+   // initialize digital pin ledPin as an output
+  pinMode(FLASH_GPIO_NUM, OUTPUT);
+  digitalWrite(FLASH_GPIO_NUM, HIGH);
+
   // Post ip to some server configured
   Serial.print("Posting IP to server ");
   Serial.print(serverName);
@@ -187,9 +195,9 @@ void setup() {
   Serial.print(WiFi.localIP());
   Serial.println("' to connect");
 
-  //wait a little before starting the cam server so its more stable
-  delay(1000);
+  delay(100);
   startCameraServer();
+  digitalWrite(FLASH_GPIO_NUM, LOW); //turn flash back off, we know its ready now
 }
 
 void loop() {
