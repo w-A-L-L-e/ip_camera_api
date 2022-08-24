@@ -1,0 +1,5 @@
+[run]
+omit = python_env/*, tests/**, main.py
+[html]
+skip_empty=true
+title=IPCameraAPI coverage report
