@@ -1,0 +1,8 @@
+pytest>=5.4.0
+pytest-cov==2.8.1
+pytest-asyncio
+pytz==2021.1
+pytest-mock==3.5.1
+autopep8>=1.5.5
+pycodestyle>=2.6.0
+requests-mock>=1.9.3
