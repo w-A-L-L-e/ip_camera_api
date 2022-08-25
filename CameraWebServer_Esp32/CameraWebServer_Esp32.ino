@@ -63,8 +63,8 @@ set new wifi creds. This is ideal. We then have a button to both update the devi
 // ===========================
 // Enter your WiFi credentials
 // ===========================
-const char* ssid = "telenet-1443323";
-const char* password = "uu4xawdvYYnf";
+//const char* ssid = "wifi_network";
+//const char* password = "wifi_password";
 
 // TODO: change this to an actual public running server in future, for now just connect to laptop
 const char* serverName = "http://192.168.0.215:3000/camera_update";
