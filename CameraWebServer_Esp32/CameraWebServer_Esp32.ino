@@ -3,7 +3,7 @@
 
   Description:
     Camare also posts its IP address to a Fast-API server running on port 3000
-  Compiling: 
+  Installation:
     add following extra board with board manager:
     https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
     and update WifiManager to version 2.0.12 using manage libraries
@@ -150,7 +150,8 @@ void setup() {
   res = wm.autoConnect("WalterCamera", "password"); 
   if(!res){
     Serial.println("WiFiManager connection failed");
-    
+
+    //flash 3 times to signal access point WalterCamera has been started
     for(int i=0;i<3;i++){
       digitalWrite(FLASH_GPIO_NUM, HIGH);
       delay(500);
@@ -191,6 +192,7 @@ void setup() {
 
   startCameraServer();
 
+  //flash led 2 times to show good connect
   for(int i=0;i<2;i++){
     digitalWrite(FLASH_GPIO_NUM, HIGH);
     delay(500);
