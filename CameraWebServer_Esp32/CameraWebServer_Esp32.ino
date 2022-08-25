@@ -1,7 +1,9 @@
 #include "esp_camera.h"
 #include <WiFi.h>
 #include <HTTPClient.h>
-#include <Arduino_JSON.h>
+//#include <Arduino_JSON.h> // not needed, now might bring back in future
+#include <WiFiManager.h> //update to version 2.0.12 using manage libraries to fix compile errors.
+
 
 /*
 
@@ -14,10 +16,16 @@ Click on the Preferences menu item. This will open a Preferences dialog box.
 You should be on the Settings tab in the Preferences dialog box by default.
 Look for the textbox labeled “Additional Boards Manager URLs”.
 If there is already text in this box add a coma at the end of it, then follow the next step.
-Paste the following link into the text box – https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
+Paste the following link into the text box – https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/packahbjhb jmm7j5reriorn5b54 78     dhglpji';kl'\kl"|jk;o:jn/l n  ne_esp32_index.json
 
 
 Choose board: AI Thinker ESP32-CAM and a serial port cu.usbmodem1410 (by plugging board in using usb data cable)
+
+TODO: Use wifi manager as it also supplies ota capabilities. And someone already made a tutorial for this exact
+usecase https://dronebotworkshop.com/wifimanager/
+-> link a button this makes it go into access point mode where you can both update the firmware and also
+set new wifi creds. This is ideal. We then have a button to both update the device firmware and setup wifi.
+
 */
 
 
@@ -161,7 +169,26 @@ void setup() {
   s->set_vflip(s, 1);
 #endif
 
-  WiFi.begin(ssid, password);
+  // WiFi.begin(ssid, password);
+  WiFiManager wm;
+     
+  // initialize digital pin ledPin as an output
+  pinMode(FLASH_GPIO_NUM, OUTPUT);
+
+  // wm.resetSettings(); //disable this in production, good for testing now
+  bool res;
+  res = wm.autoConnect("WalterCamera", "password");
+  if(!res){
+    Serial.println("WiFiManager connection failed");
+    
+    for(int i=0;i<3;i++){
+      digitalWrite(FLASH_GPIO_NUM, HIGH);
+      delay(500);
+      digitalWrite(FLASH_GPIO_NUM, LOW); //turn flash back off, we know its ready now
+      delay(100);
+    }
+  }
+  
   WiFi.setSleep(false);
 
   while (WiFi.status() != WL_CONNECTED) {
@@ -171,9 +198,6 @@ void setup() {
   Serial.println("");
   Serial.println("WiFi connected");
 
-   // initialize digital pin ledPin as an output
-  pinMode(FLASH_GPIO_NUM, OUTPUT);
-  digitalWrite(FLASH_GPIO_NUM, HIGH);
 
   // Post ip to some server configured
   Serial.print("Posting IP to server ");
@@ -195,9 +219,15 @@ void setup() {
   Serial.print(WiFi.localIP());
   Serial.println("' to connect");
 
-  delay(100);
   startCameraServer();
-  digitalWrite(FLASH_GPIO_NUM, LOW); //turn flash back off, we know its ready now
+
+  for(int i=0;i<2;i++){
+    digitalWrite(FLASH_GPIO_NUM, HIGH);
+    delay(500);
+    digitalWrite(FLASH_GPIO_NUM, LOW); //turn flash back off, we know its ready now
+    delay(100);
+  }
+
 }
 
 void loop() {
