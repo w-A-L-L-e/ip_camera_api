@@ -6,37 +6,10 @@
 
 
 /*
-
 Camera example modified by Walter Schreppers to post IP address to a Fast-API server running on port 3000
-
 ALSO add following extra board with board manager:
-
-Click on the File menu on the top menu bar.
-Click on the Preferences menu item. This will open a Preferences dialog box.
-You should be on the Settings tab in the Preferences dialog box by default.
-Look for the textbox labeled “Additional Boards Manager URLs”.
-If there is already text in this box add a coma at the end of it, then follow the next step.
-Paste the following link into the text box – https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/packahbjhb jmm7j5reriorn5b54 78     dhglpji';kl'\kl"|jk;o:jn/l n  ne_esp32_index.json
-
-
-Choose board: AI Thinker ESP32-CAM and a serial port cu.usbmodem1410 (by plugging board in using usb data cable)
-
-TODO: Use wifi manager as it also supplies ota capabilities. And someone already made a tutorial for this exact
-usecase https://dronebotworkshop.com/wifimanager/
--> link a button this makes it go into access point mode where you can both update the firmware and also
-set new wifi creds. This is ideal. We then have a button to both update the device firmware and setup wifi.
-
+https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
 */
-
-
-//
-// WARNING!!! PSRAM IC required for UXGA resolution and high JPEG quality
-//            Ensure ESP32 Wrover Module or other board with PSRAM is selected
-//            Partial images will be transmitted if image exceeds buffer size
-//
-//            You must select partition scheme from the board menu that has at least 3MB APP space.
-//            Face Recognition is DISABLED for ESP32 and ESP32-S2, because it takes up from 15 
-//            seconds to process single frame. Face Detection is ENABLED if PSRAM is enabled as well
 
 // ===================
 // Select camera model
@@ -169,8 +142,8 @@ void setup() {
   s->set_vflip(s, 1);
 #endif
 
-  // WiFi.begin(ssid, password);
-  WiFiManager wm;
+  // WiFi.begin(ssid, password); //old style, with hardcoded creds
+  WiFiManager wm; //wifi manager creates own access point when it can't connect to the wifi
      
   // initialize digital pin ledPin as an output
   pinMode(FLASH_GPIO_NUM, OUTPUT);
