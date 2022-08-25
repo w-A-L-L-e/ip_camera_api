@@ -1,15 +1,21 @@
+/* ==============================================================================================
+  Esp32 Camera firmware modified by Walter Schreppers 
+
+  Description:
+    Camare also posts its IP address to a Fast-API server running on port 3000
+  Compiling: 
+    add following extra board with board manager:
+    https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
+    and update WifiManager to version 2.0.12 using manage libraries
+===============================================================================================*/
+
+
 #include "esp_camera.h"
 #include <WiFi.h>
 #include <HTTPClient.h>
-//#include <Arduino_JSON.h> // not needed, now might bring back in future
-#include <WiFiManager.h> //update to version 2.0.12 using manage libraries to fix compile errors.
+// #include <Arduino_JSON.h> // not needed, now might bring back in future
+#include <WiFiManager.h>
 
-
-/*
-Camera example modified by Walter Schreppers to post IP address to a Fast-API server running on port 3000
-ALSO add following extra board with board manager:
-https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
-*/
 
 // ===================
 // Select camera model
@@ -33,18 +39,8 @@ https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32
 
 #define FLASH_GPIO_NUM 4  // ESP32-CAM GPIO 4 (flashlight)
 
-// ===========================
-// Enter your WiFi credentials
-// ===========================
-//const char* ssid = "wifi_network";
-//const char* password = "wifi_password";
-
 // TODO: change this to an actual public running server in future, for now just connect to laptop
 const char* serverName = "http://192.168.0.215:3000/camera_update";
-
-// TODO: OTA https://lastminuteengineers.com/esp32-ota-web-updater-arduino-ide/
-
-
 void startCameraServer();
 
 String IpAddressToString(const IPAddress& ipAddress) {
@@ -142,7 +138,6 @@ void setup() {
   s->set_vflip(s, 1);
 #endif
 
-  // WiFi.begin(ssid, password); //old style, with hardcoded creds
   WiFiManager wm; //wifi manager creates own access point when it can't connect to the wifi
      
   // initialize digital pin ledPin as an output
@@ -150,7 +145,9 @@ void setup() {
 
   // wm.resetSettings(); //disable this in production, good for testing now
   bool res;
-  res = wm.autoConnect("WalterCamera", "password");
+
+  // TODO: change this password also once it's a doorbell ;)
+  res = wm.autoConnect("WalterCamera", "password"); 
   if(!res){
     Serial.println("WiFiManager connection failed");
     
