@@ -142,21 +142,18 @@ void setup() {
      
   // initialize digital pin ledPin as an output
   pinMode(FLASH_GPIO_NUM, OUTPUT);
-
-  // wm.resetSettings(); //disable this in production, good for testing now
   bool res;
+  res = wm.autoConnect("WalterCamera", "password");   // TODO: change this password also once it's a doorbell ;)
 
-  // TODO: change this password also once it's a doorbell ;)
-  res = wm.autoConnect("WalterCamera", "password"); 
   if(!res){
     Serial.println("WiFiManager connection failed");
 
     //flash 3 times to signal access point WalterCamera has been started
     for(int i=0;i<3;i++){
       digitalWrite(FLASH_GPIO_NUM, HIGH);
-      delay(500);
+      delay(300);
       digitalWrite(FLASH_GPIO_NUM, LOW); //turn flash back off, we know its ready now
-      delay(100);
+      delay(200);
     }
   }
   
@@ -195,9 +192,9 @@ void setup() {
   //flash led 2 times to show good connect
   for(int i=0;i<2;i++){
     digitalWrite(FLASH_GPIO_NUM, HIGH);
-    delay(500);
+    delay(400);
     digitalWrite(FLASH_GPIO_NUM, LOW); //turn flash back off, we know its ready now
-    delay(100);
+    delay(200);
   }
 
 }

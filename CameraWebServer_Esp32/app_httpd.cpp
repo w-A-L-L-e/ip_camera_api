@@ -19,6 +19,7 @@
 #include "driver/ledc.h"
 #include "sdkconfig.h"
 #include "camera_index.h"
+#include <WifiManager.h>
 
 #if defined(ARDUINO_ARCH_ESP32) && defined(CONFIG_ARDUHAL_ESP_LOG)
 #include "esp32-hal-log.h"
@@ -888,8 +889,23 @@ static esp_err_t cmd_handler(httpd_req_t *req)
         res = s->set_wb_mode(s, val);
     else if (!strcmp(variable, "ae_level"))
         res = s->set_ae_level(s, val);
-    else if (!strcmp(variable, "restart"))
+    else if (!strcmp(variable, "restart")){
+        Serial.println("restart called...");
         if(val==1) esp_restart(); // issue a reboot/restart of esp to fix streaming
+    }
+    else if (!strcmp(variable, "wifi_reset")){
+      if(val==1){
+        // reset wifi settings and then restart
+        Serial.println("Reset wifi settings...");
+        WiFiManager wm;
+        wm.resetSettings();
+        Serial.println("done. Now restarting esp");
+        esp_restart();
+      }
+      else{
+         Serial.println("wifi reset failed value!=1");
+      }
+    }
 #ifdef CONFIG_LED_ILLUMINATOR_ENABLED
     else if (!strcmp(variable, "led_intensity")) {
         led_duty = val;
