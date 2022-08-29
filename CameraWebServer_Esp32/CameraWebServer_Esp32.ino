@@ -7,6 +7,13 @@
     add following extra board with board manager:
     https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
     and update WifiManager to version 2.0.12 using manage libraries
+
+    update: tried fixing ota this way instead:
+    https://github.com/easytarget/esp32-cam-webserver
+    -> select generic ESP32 dev board instead of the AI thinker
+    -> select Minimal sPIFFS 1.9app with ota 190kb
+    -> enable psram
+    
 ===============================================================================================*/
 
 
@@ -183,7 +190,7 @@ void setup() {
   http.end();
 
   // also print ip to serial
-  Serial.print("Camera Ready! Use 'http://");
+  Serial.print("Camera Ready (v1.0.2). Use 'http://");
   Serial.print(WiFi.localIP());
   Serial.println("' to connect");
 
